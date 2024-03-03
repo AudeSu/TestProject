@@ -1,13 +1,16 @@
 import { useState } from "react";
-import "./login.scss"
+import "./login.scss";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate()
 
   const handleLogin = (e) => {
     // https://firebase.google.com/docs/auth/web/password-auth
@@ -16,8 +19,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
-        console.log(user)
-        // ...
+        navigate("/")
       })
       .catch((error) => {
         setError(true)
