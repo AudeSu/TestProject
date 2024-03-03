@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./login.scss"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase"
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const [error, setError] = useState(false);
@@ -9,17 +10,33 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
+    // https://firebase.google.com/docs/auth/web/password-auth
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        console.log(user)
+        // ...
+      })
+      .catch((error) => {
+        setError(true)
+      });
+  }
+
+  const handleRegister = (e) => {
+    // https://firebase.google.com/docs/auth/web/password-auth
+    // TODO: registreren moet nog verplaatst worden nr de registratiepagina die aangemaakt moet worden
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
+        console.log(user)
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
+        setError(true)
       });
   }
 
